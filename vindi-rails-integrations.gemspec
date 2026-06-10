@@ -10,7 +10,9 @@ Gem::Specification.new do |spec|
 
   spec.summary = "Rails backend integrations (webhooks, jobs, sync) for Vindi API."
   spec.description = "Provides webhook handling, background jobs, and data synchronization for the Vindi Rails SDK."
-  spec.homepage = "https://github.com/wesleyskap/vindi-rails"
+  spec.homepage = "https://github.com/wesleyskap/vindi-rails-integrations"
+  spec.metadata["changelog_uri"] = "https://github.com/wesleyskap/vindi-rails-integrations/blob/master/CHANGELOG.md"
+
   spec.license = "MIT"
   spec.required_ruby_version = ">= 3.0.0"
 
@@ -30,4 +32,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "activerecord", ">= 6.0"
   spec.add_development_dependency "activejob", ">= 6.0"
   spec.add_development_dependency "actionpack", ">= 6.0"
+
 end
