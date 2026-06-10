@@ -2,4 +2,6 @@
 
 source "https://rubygems.org"
 
+gem "vindi-rails", path: "../vindi-rails"
+
 gemspec

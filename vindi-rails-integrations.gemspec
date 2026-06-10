@@ -22,4 +22,12 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "vindi-rails", ">= 0.2.0"
   spec.add_dependency "railties", ">= 6.0"
+
+  spec.add_development_dependency "rake"
+  spec.add_development_dependency "minitest"
+  spec.add_development_dependency "webmock"
+  spec.add_development_dependency "sqlite3"
+  spec.add_development_dependency "activerecord", ">= 6.0"
+  spec.add_development_dependency "activejob", ">= 6.0"
+  spec.add_development_dependency "actionpack", ">= 6.0"
 end
