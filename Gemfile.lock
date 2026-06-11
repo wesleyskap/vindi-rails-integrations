@@ -7,7 +7,7 @@ PATH
 PATH
   remote: .
   specs:
-    vindi-rails-integrations (0.1.1)
+    vindi-rails-integrations (0.2.0)
       railties (>= 6.0)
       vindi-rails (>= 0.2.0)
 

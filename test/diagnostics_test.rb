@@ -4,7 +4,7 @@ require "test_helper"
 require "vindi/integrations/diagnostics"
 
 class DiagnosticsTest < ActiveSupport::TestCase
-  def setup
+  setup do
     WebMock.enable!
     Vindi.configure do |config|
       config.api_key = "test_key_12345"
@@ -13,7 +13,7 @@ class DiagnosticsTest < ActiveSupport::TestCase
     ENV["VINDI_WEBHOOK_TOKEN"] = "webhook_secret_999"
   end
 
-  def test_diagnostics_run_success
+  test "diagnostics execution returns success details and masked keys" do
     stub_request(:get, "https://sandbox-gp.vindi.com.br/api/v1/customers")
       .to_return(status: 200, body: { customers: [] }.to_json, headers: { "Content-Type" => "application/json" })
 
@@ -27,7 +27,7 @@ class DiagnosticsTest < ActiveSupport::TestCase
     assert_nil result[:connectivity][:error]
   end
 
-  def test_diagnostics_run_failure
+  test "diagnostics execution reports failure on connection error" do
     stub_request(:get, "https://sandbox-gp.vindi.com.br/api/v1/customers")
       .to_return(status: 401, body: { error: "Unauthorized" }.to_json, headers: { "Content-Type" => "application/json" })
 
