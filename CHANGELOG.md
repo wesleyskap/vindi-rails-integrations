@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.0] - 2026-06-11
+
+### Added
+- **Diagnostics & Connectivity Task**: `rails vindi:status` Rake task to check Vindi API credentials and connectivity safely.
+- **Diagnostics Service**: New `Vindi::Integrations::Diagnostics` service to safely mask API and webhook secrets and execute health checks.
+
 ## [0.1.0] - 2026-06-10
 
 ### Added

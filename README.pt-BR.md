@@ -36,6 +36,7 @@ bundle exec rails generate vindi:sync User
 Isso gera uma migração para incluir a coluna `vindi_customer_id` e adiciona o Concern `Vindi::Synchronizable` ao seu modelo.
 
 ### 3. Tarefas Rake
+- **`bundle exec rake vindi:status`**: Valida a configuração da API, ambiente, credenciais (mascaradas com segurança) e testa a conectividade em tempo real.
 - **`bundle exec rake vindi:audit model=User`**: Compara os registros locais do banco de dados com a API da Vindi para identificar inconsistências.
 - **`bundle exec rake vindi:test_webhook event=bill_paid`**: Envia uma notificação de webhook simulada diretamente para o seu endpoint local de testes.
 

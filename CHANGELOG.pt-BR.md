@@ -2,6 +2,12 @@
 
 Todas as alterações notáveis neste projeto serão documentadas neste arquivo.
 
+## [0.2.0] - 2026-06-11
+
+### Adicionado
+- **Tarefa de Diagnóstico e Conectividade**: Task Rake `rails vindi:status` para verificar de forma segura as credenciais e conectividade com a API da Vindi.
+- **Serviço de Diagnóstico**: Nova classe `Vindi::Integrations::Diagnostics` que mascara tokens sensíveis da API/webhooks e executa testes de saúde de conexão.
+
 ## [0.1.0] - 2026-06-10
 
 ### Adicionado

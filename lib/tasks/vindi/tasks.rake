@@ -19,6 +19,29 @@ namespace :vindi do
     payload = build_simulated_payload(event_type)
     send_simulated_webhook(url, token, payload)
   end
+
+  desc "Verify Vindi API credentials and connectivity"
+  task status: :environment do
+    results = Vindi::Integrations::Diagnostics.run
+    print_status_report(results)
+  end
+end
+
+def print_status_report(results)
+  puts "=== Vindi Integration Status ==="
+  puts "Environment: #{results[:environment]}"
+  puts "API URL:     #{results[:api_url]}"
+  puts "API Key:     #{results[:api_key]}"
+  puts "Webhook:     #{results[:webhook_token]}"
+  puts "--------------------------------"
+  
+  if results[:connectivity][:status] == "Connected"
+    puts "Connectivity: SUCCESS"
+  else
+    puts "Connectivity: FAILED"
+    puts "Error:        #{results[:connectivity][:error]}"
+  end
+  puts "================================"
 end
 
 def audit_records(klass)
