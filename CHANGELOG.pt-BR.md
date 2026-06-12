@@ -2,6 +2,13 @@
 
 Todas as alterações notáveis neste projeto serão documentadas neste arquivo.
 
+## [0.3.0] - 2026-06-12
+
+### Adicionado
+- **Handlers Modulares de Webhooks**: Adicionado o gerador `rails generate vindi:webhook_handler [EventName]` para criar tratadores de eventos de serviço desacoplados em `app/services/vindi/webhooks/`.
+- **Despacho Dinâmico de Webhooks**: Atualizado o `WebhookJob` para resolver e delegar payloads dinamicamente aos handlers modulares correspondentes, mantendo a compatibilidade e fallbacks para implementações legadas.
+- **Sincronização de Dependências no Docker**: Corrigido o Dockerfile para incluir o `Gemfile.lock` na etapa de cache do bundler, evitando incompatibilidades de versão de gemas em runtime.
+
 ## [0.2.0] - 2026-06-11
 
 ### Adicionado
