@@ -55,6 +55,7 @@ end
 # Require the generators so they are loaded in tests
 require "generators/vindi/webhook_generator"
 require "generators/vindi/sync_generator"
+require "generators/vindi/webhook_handler_generator"
 
 # Mock Vindi API setup
 Vindi.configure do |config|

@@ -40,6 +40,23 @@ module Vindi
     private
 
     def process_event(event_type, data)
+      handler_klass = find_handler_class(event_type)
+      if handler_klass
+        handler_klass.new(data).call
+      else
+        fallback_process_event(event_type, data)
+      end
+    end
+
+    def find_handler_class(event_type)
+      return if event_type.blank?
+
+      "Vindi::Webhooks::#{event_type.camelize}Handler".safe_constantize
+    rescue NameError
+      nil
+    end
+
+    def fallback_process_event(event_type, data)
       case event_type
       when "subscription_created"
         handle_subscription_created(data[:subscription])
