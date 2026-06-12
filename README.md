@@ -28,6 +28,17 @@ Configure your webhook access token in your environment files:
 ENV["VINDI_WEBHOOK_TOKEN"] = "YOUR_SECURE_TOKEN"
 ```
 
+#### Modular Webhook Handlers
+Instead of processing all webhook events inside a single `WebhookJob`, you can generate modular event-specific handlers:
+```bash
+bundle exec rails generate vindi:webhook_handler subscription_canceled
+```
+This generates:
+- `Vindi::Webhooks::BaseHandler` (`app/services/vindi/webhooks/base_handler.rb`) - created once if missing.
+- `Vindi::Webhooks::SubscriptionCanceledHandler` (`app/services/vindi/webhooks/subscription_canceled_handler.rb`)
+
+The main `WebhookJob` automatically detects and forwards the event payload to matching handlers (e.g. `Vindi::Webhooks::SubscriptionCanceledHandler` for `subscription_canceled` events) with safe fallback to legacy inline handlers.
+
 ### 2. ActiveRecord Model Sync
 To automatically synchronize local models (e.g. `User`) with Vindi Customers:
 ```bash

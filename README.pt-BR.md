@@ -28,6 +28,17 @@ Configure o token de acesso seguro no seu ambiente:
 ENV["VINDI_WEBHOOK_TOKEN"] = "SEU_TOKEN_SEGURO"
 ```
 
+#### Handlers Modulares de Webhooks
+Em vez de centralizar todo o processamento de eventos dentro de um único `WebhookJob` genérico, você pode criar handlers específicos por evento:
+```bash
+bundle exec rails generate vindi:webhook_handler subscription_canceled
+```
+Isso gera:
+- `Vindi::Webhooks::BaseHandler` (`app/services/vindi/webhooks/base_handler.rb`) - gerado uma vez caso não exista.
+- `Vindi::Webhooks::SubscriptionCanceledHandler` (`app/services/vindi/webhooks/subscription_canceled_handler.rb`)
+
+O `WebhookJob` principal detecta e encaminha automaticamente o payload recebido para o handler modular correspondente (ex: `Vindi::Webhooks::SubscriptionCanceledHandler` para o evento `subscription_canceled`), mantendo fallback seguro para tratadores legados inline.
+
 ### 2. Sincronização ActiveRecord
 Para sincronizar automaticamente modelos locais (ex: `User`) com os Clientes da Vindi:
 ```bash
