@@ -1,13 +1,13 @@
 PATH
   remote: ../vindi-rails
   specs:
-    vindi-rails (0.2.0)
+    vindi-rails (0.2.1)
       rest-client (~> 2.1)
 
 PATH
   remote: .
   specs:
-    vindi-rails-integrations (0.2.0)
+    vindi-rails-integrations (0.3.0)
       railties (>= 6.0)
       vindi-rails (>= 0.2.0)
 
