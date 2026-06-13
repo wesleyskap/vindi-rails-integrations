@@ -7,9 +7,13 @@ class User < ActiveRecord::Base
 end
 
 class SynchronizableTest < Minitest::Test
+  include ActiveJob::TestHelper
+
   def setup
     WebMock.enable!
     User.delete_all
+    Vindi::PendingSync.delete_all
+    Vindi.configuration.use_outbox = false
   end
 
   def teardown
@@ -36,5 +40,49 @@ class SynchronizableTest < Minitest::Test
     user.save!(validate: false)
 
     user.update!(name: "Alice Smith")
+  end
+
+  def test_outbox_creates_pending_sync_and_enqueues_job_instead_of_direct_call
+    Vindi.configuration.use_outbox = true
+
+    # No stub for POST customers is created yet. If an API call is made synchronously, it will raise WebMock::NetConnectNotAllowedError.
+    user = nil
+    assert_enqueued_with(job: Vindi::ProcessPendingSyncsJob) do
+      user = User.create!(name: "Bob", email: "bob@example.com")
+    end
+
+    # The user should not have a vindi_customer_id yet
+    assert_nil user.vindi_customer_id
+
+    # There should be a PendingSync record in the database
+    sync = Vindi::PendingSync.last
+    assert_equal "User", sync.item_type
+    assert_equal user.id.to_s, sync.item_id.to_s
+    assert_equal "create", sync.action
+    assert_equal "pending", sync.status
+    assert_equal "Bob", sync.params["name"]
+  end
+
+  def test_process_pending_syncs_job_performs_api_call
+    Vindi.configuration.use_outbox = true
+
+    user = nil
+    assert_enqueued_jobs 1 do
+      user = User.create!(name: "Bob", email: "bob@example.com")
+    end
+
+    # Stub the API request for when the job runs
+    stub_request(:post, "https://sandbox-gp.vindi.com.br/api/v1/customers")
+      .with(body: { name: "Bob", email: "bob@example.com", code: user.id.to_s })
+      .to_return(status: 201, body: { customer: { id: 9988, name: "Bob", email: "bob@example.com", code: user.id.to_s } }.to_json, headers: { "Content-Type" => "application/json" })
+
+    perform_enqueued_jobs
+
+    user.reload
+    assert_equal "9988", user.vindi_customer_id
+
+    sync = Vindi::PendingSync.last
+    assert_equal "processed", sync.status
+    assert_nil sync.last_error
   end
 end
