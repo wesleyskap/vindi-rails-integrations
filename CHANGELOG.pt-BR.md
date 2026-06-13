@@ -2,6 +2,13 @@
 
 Todas as alterações notáveis neste projeto serão documentadas neste arquivo.
 
+## [0.4.0] - 2026-06-13
+
+### Adicionado
+- **Fila Outbox Transacional Resiliente**: Padrão opcional de sincronização outbox para enfileirar tarefas de integração no banco local durante as transações, prevenindo chamadas HTTP externas síncronas.
+- **ProcessPendingSyncsJob**: Executor assíncrono baseado em ActiveJob para processar as pendências de banco de dados com retentativas automáticas e logs de erros.
+- **Gerador de Migração de Outbox**: Gerador via CLI `rails generate vindi:outbox` para criar facilmente o esquema do banco de dados do outbox.
+
 ## [0.3.0] - 2026-06-12
 
 ### Adicionado

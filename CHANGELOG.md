@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.0] - 2026-06-13
+
+### Added
+- **Resilient Transactional Outbox Sync**: Optional outbox synchronization pattern to queue integration tasks locally inside database transactions, avoiding inline external HTTP API calls.
+- **ProcessPendingSyncsJob**: Background ActiveJob runner to process pending database syncs with automatic retries and error logging.
+- **Outbox Migration Generator**: CLI generator `rails generate vindi:outbox` to easily create the outbox schema.
+
 ## [0.3.0] - 2026-06-12
 
 ### Added

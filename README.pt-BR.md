@@ -46,6 +46,25 @@ bundle exec rails generate vindi:sync User
 ```
 Isso gera uma migração para incluir a coluna `vindi_customer_id` e adiciona o Concern `Vindi::Synchronizable` ao seu modelo.
 
+#### Fila Outbox Transacional Resiliente (Opcional)
+Para evitar que latências de rede ou indisponibilidade da API da Vindi travem transações locais do seu banco de dados, você pode habilitar o padrão Outbox. Isso salva as tarefas de sincronização localmente no banco durante a transação e as processa em segundo plano de forma assíncrona.
+
+1. **Gere a migração do Outbox**:
+   ```bash
+   bundle exec rails generate vindi:outbox
+   bundle exec rails db:migrate
+   ```
+2. **Habilite o Outbox** no seu initializer:
+   ```ruby
+   Vindi.configure do |config|
+     config.use_outbox = true
+   end
+   ```
+3. **Processamento**: O job `Vindi::ProcessPendingSyncsJob` é enfileirado automaticamente após o commit do modelo. Você também pode dispará-lo manualmente ou agendá-lo:
+   ```ruby
+   Vindi::ProcessPendingSyncsJob.perform_later
+   ```
+
 ### 3. Tarefas Rake
 - **`bundle exec rake vindi:status`**: Valida a configuração da API, ambiente, credenciais (mascaradas com segurança) e testa a conectividade em tempo real.
 - **`bundle exec rake vindi:audit model=User`**: Compara os registros locais do banco de dados com a API da Vindi para identificar inconsistências.
